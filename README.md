@@ -1,0 +1,2 @@
+# WRabbitC
+Wordpress RabbitMQ Connector
