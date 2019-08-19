@@ -28,7 +28,7 @@ i suggest to use wordpress debug, see wordpress codex for more info
 
 * **Domenico Pascucci ** - *Initial work* - [Pasmimmo](https://github.com/Pasmimmo)
 
-based on a work of [Jakubkulhan](https://github.com/jakubkulhan/bunny) - *Bunny AMQP Client* 
+based on a work of [Jakubkulhan](https://github.com/jakubkulhan/bunny) - *Performant pure-PHP AMQP (RabbitMQ) sync/async (ReactPHP) library* 
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
