@@ -30,7 +30,7 @@ i suggest to use wordpress debug, see wordpress codex for more info
 
 based on a work of [Jakubkulhan](https://github.com/jakubkulhan/bunny) - *Performant pure-PHP AMQP (RabbitMQ) sync/async (ReactPHP) library* 
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/pasmimmo/WRabbitC/blob/master/Contributors) who participated in this project.
 
 ## License
 
