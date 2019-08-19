@@ -1,0 +1,344 @@
+<?php
+ /* 
+ * Retrieve this value with:
+ * $_wrabbitc_settings = get_option( 'wrabbitc_connection_settings' ); 		// Array of All Options
+ * $checkbox = $_wrabbitc_settings['checkbox']; 							// checkbox
+ * $queue_name = $_wrabbitc_settings['queue_name']; 						// queue_name
+ * $exange_name = $_wrabbitc_settings['exange_name']; 						// exange_name
+ * $host = $_wrabbitc_settings['host']; 									// host
+ * $vhost = $_wrabbitc_settings['vhost']; 									// vhost
+ * $port = $_wrabbitc_settings['port']; 									// port
+ * $user = $_wrabbitc_settings['user']; 									// user
+ * $password = $_wrabbitc_settings['password']; 							// password
+ * $amqp_uri = $_wrabbitc_settings['amqp_uri']; 							// amqp_uri
+ */
+
+class WrabbitcSettings {
+	private $_wrabbitc_settings;
+	/**
+	 * Costruttore che aggiunge delle chiamate a funzione per un determinato hook di wordpress.
+	 * gli hook sostanziamente sono delle callback (defenite in wordpress ma posso essere estese)
+	 * al verificarsi delle quali verrà eseguita la funzione che ci abbiamo registrato.
+	 */
+	public function __construct() {
+		add_action( 'admin_menu', array( $this, 'wrabbit_register_settings_page' ) );
+		add_action( 'admin_init', array( $this, 'wrabbit_register_settings_fields' ) );		
+	}
+	/**
+	 * Metodo che tramite hook 'admin_menu' registra una pagina nella sezione amministrazione ed 
+	 * eventuali sotto pagine
+	 */
+	public function wrabbit_register_settings_page() {
+		add_menu_page(
+			'WRabbitC', 														// page_title
+			'WRabbitC', 														// menu_title
+			'manage_options', 													// capability
+			'wrabbitc-settings', 												// menu_slug
+			array( $this, 'main_page' ), 										// function
+			'dashicons-carrot', 												// icon_url
+			100 																// position
+		);
+
+		add_submenu_page( 
+			'wrabbitc-settings', 												// parent menu_slug
+			'WRabbitC Connection Settings', 									//Submenu Page Title
+			'Connection Settings', 												//Menu subsection Title
+			'manage_options', 													//capability
+			'wrabbitc-connection-settings', 									//this menu-slug
+			array($this, 'connection_page')										//funcrion optional
+		);
+		add_submenu_page( 'wrabbitc-settings', 'WRabbitC Sender', 'Messages Sender', 
+		'manage_options', 'wrabbitc-producer', array($this, 'sender_page'));
+	}
+
+	public function main_page()
+	{
+		echo '
+		<div class="wp-caption">
+			<h3>Welcome to WordPress RabbitMQ Connector,</h3>
+			<br>
+			<p> WRabbitC for friends, this plugin is still in development (current version 0.6.0), 
+			at the moment it is possible to configure the connection parameters ( we use CloudAMQP in developing) in the appropriate menu, 
+			and use a shortcode to send data to your broker.
+			In our wish list is to fully implement sending and receiving mode, then stay connected.
+			Thank you for installing WrabbitC you can contact us at our GitHub, the WRabbitC team gives you a warm greeting
+			<img src="'.plugins_url('wrabbitc/img/',__DIR__).'butterfly.gif" width="300" height="300" align="center">
+			';
+	}
+
+	public function connection_page() {
+		/* Otteniamo i valori dal database qualora ce ne fossero */
+		$this->_wrabbitc_settings = get_option( 'wrabbitc_connection_settings' );
+		/* aggiungiamo il nostro codice css e javascript con le funzioni wp_equeue_syle() e wp_enqueue_script*/
+		wp_enqueue_style('settings_css' , plugins_url().'/wrabbitc/css/settings.css' );
+		wp_enqueue_script('settings_script' , plugins_url().'/wrabbitc/js/wrabbitc_settings_script.js' );
+		?>
+
+		<div class="wrap">
+			<?php 
+			settings_errors();
+			?>
+			
+			<form method="post" action="options.php">
+				<?php
+					settings_fields( 'wrabbitc_connection_settings' );
+					do_settings_sections( 'wrabbitc-connection-settings' );
+				?>
+				<div id="wrabbitc_manual_setting">
+				<?php do_settings_sections( 'wrabbitc-manual-connection-settings' ); ?>
+				</div>
+				<div id="wrabbitc_amqp_uri" style="display: none;">
+				<?php do_settings_sections( 'wrabbitc-amqp-connection-settings' ); ?>
+				</div>
+				<?php submit_button();?>
+			</form>
+
+		<?php 
+	}
+
+	public function sender_page(){
+		echo '
+		<div class="wp-caption">
+		<img src="'.plugins_url('wrabbitc/img/',__DIR__).'rabbit_chair.gif" width="200" height="200" align="right">
+		<p>We are sorry but at the moment sending messages is allowed only through preconfigured form,
+		you can use it inserting the shortcode [wrabbitc-sc] on any page or article.<p>
+		</div>
+		';
+	}
+
+	public function connection_section_general(){
+		echo '	<div class="wp-caption">
+					You can use following fields to setUp your Connection
+				</div>
+		';
+	}
+
+	public function connection_section_manual(){/*NOOP Callback */}
+
+	public function connection_section_amqp_uri(){/*NOOP Callback */}
+
+	public function wrabbit_register_settings_fields() {
+		register_setting(
+			'wrabbitc_connection_settings',							// option_group
+			'wrabbitc_connection_settings',							// option_name
+			array( $this, 'wrabbitc_settings_sanitize' ) 			// sanitize_callback
+		);
+		//General Connection Section
+		add_settings_section(
+			'wrabbitc_connection', 									// id
+			'WRabbitC Connection Settings', 						// title
+			array( $this, 'connection_section_general' ), 			// callback
+			'wrabbitc-connection-settings' 							// page
+		);
+
+		add_settings_field(
+			'checkbox', 											// id
+			'use AMQP URI', 										// title
+			array( $this, 'checkbox_callback' ), 					// callback
+			'wrabbitc-connection-settings', 						// page
+			'wrabbitc_connection'	 								// section
+		);
+
+		add_settings_field(
+			'queue_name', 											// id
+			'Queue Name: ', 										// title
+			array( $this, 'queue_name_callback' ), 					// callback
+			'wrabbitc-connection-settings', 						// page
+			'wrabbitc_connection'									// section
+		);
+
+		add_settings_field(
+			'exange_name', 											// id
+			'Exange Name: ', 										// title
+			array( $this, 'exange_name_callback' ), 				// callback
+			'wrabbitc-connection-settings', 						// page
+			'wrabbitc_connection'									// section
+		);
+		// Manual URL Section
+		add_settings_section(
+			'wrabbitc_manual_url_settings', 						// id
+			'Manual Settings', 										// title
+			array( $this, 'connection_section_manual' ), 			// callback
+			'wrabbitc-manual-connection-settings' 					// page
+		);
+
+		add_settings_field(
+			'host', 												// id
+			'Host: ', 												// title
+			array( $this, 'host_callback' ), 						// callback
+			'wrabbitc-manual-connection-settings', 					// page
+			'wrabbitc_manual_url_settings' 							// section
+		);
+
+		add_settings_field(
+			'vhost', 												// id
+			'VHost: ', 												// title
+			array( $this, 'vhost_callback' ), 						// callback
+			'wrabbitc-manual-connection-settings', 					// page
+			'wrabbitc_manual_url_settings' 							// section
+		);
+
+		add_settings_field(
+			'port', 												// id
+			'Port: ', 												// title
+			array( $this, 'port_callback' ), 						// callback
+			'wrabbitc-manual-connection-settings', 					// page
+			'wrabbitc_manual_url_settings' 							// section
+		);
+
+
+		add_settings_field(
+			'user', 												// id
+			'User: ',												// title
+			array( $this, 'user_callback' ), 						// callback
+			'wrabbitc-manual-connection-settings', 					// page
+			'wrabbitc_manual_url_settings' 							// section
+		);
+
+		add_settings_field(
+			'password', 											// id
+			'Password: ', 											// title
+			array( $this, 'password_callback' ), 					// callback
+			'wrabbitc-manual-connection-settings', 					// page
+			'wrabbitc_manual_url_settings' 							// section
+		);
+		//AMQP URI Section
+		add_settings_section(
+			'wrabbitc_amqp_uri_settings', 							// id
+			'AMQP URI Settings', 									// title
+			array( $this, 'connection_section_amqp_uri' ), 			// callback
+			'wrabbitc-amqp-connection-settings' 					// page
+		);
+
+		add_settings_field(
+			'amqp_uri', 											// id
+			'AMQP URI: ', 											// title
+			array( $this, 'amqp_callback' ), 						// callback
+			'wrabbitc-amqp-connection-settings', 					// page
+			'wrabbitc_amqp_uri_settings' 							// section
+		);
+
+	}
+
+	public function wrabbitc_settings_sanitize($input) {
+		$sanitary_values = array();
+		//General Section
+		if ( isset( $input['checkbox'] ) ) {
+			$sanitary_values['checkbox'] = $input['checkbox'];
+		}
+
+		if ( isset( $input['queue_name'] ) ) {
+			$sanitary_values['queue_name'] = sanitize_text_field( $input['queue_name'] );
+		}
+
+		if ( isset( $input['exange_name'] ) ) {
+			$sanitary_values['exange_name'] = sanitize_text_field( $input['exange_name'] );
+		}
+
+		//Manual Section
+		if ( isset( $input['host'] ) ) {
+			$sanitary_values['host'] = sanitize_text_field( $input['host'] );
+		}
+
+		if ( isset( $input['vhost'] ) ) {
+			$sanitary_values['vhost'] = sanitize_text_field( $input['vhost'] );
+		}
+
+		if ( isset( $input['port'] ) ) {
+			$sanitary_values['port'] = sanitize_text_field( $input['port'] );
+		}
+
+		if ( isset( $input['user'] ) ) {
+			$sanitary_values['user'] = sanitize_text_field( $input['user'] );
+		}
+
+		if ( isset( $input['password'] ) ) {
+			$sanitary_values['password'] = sanitize_text_field( $input['password'] );
+		}
+
+		//AMQP URI Section
+		if ( isset( $input['amqp_uri'] ) ) {
+			$sanitary_values['amqp_uri'] = esc_url_raw( $input['amqp_uri'] );
+		}
+
+		return $sanitary_values;
+	}
+	//Forms Callback
+
+	public function checkbox_callback() {
+		printf(
+			'<label class="switch">
+			<input type="checkbox" name="wrabbitc_connection_settings[checkbox]" id="checkbox" value="checkbox" %s> 
+			<span class="slider round" id="slider_round" onclick="uriSelector()"></span>
+			</label>',
+			( isset( $this->_wrabbitc_settings['checkbox'] ) && $this->_wrabbitc_settings['checkbox'] === 'checkbox' ) ? 'checked' : ''
+		);
+	}
+
+	public function queue_name_callback() {
+		printf(
+			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[queue_name]" id="queue_name" value="%s" placeholder="es myQueue">',
+			isset( $this->_wrabbitc_settings['queue_name'] ) ? esc_attr( $this->_wrabbitc_settings['queue_name']) : ''
+		);
+	}
+
+	public function exange_name_callback() {
+		printf(
+			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[exange_name]" id="exange_name" value="%s" placeholder="usually same as queue name">',
+			isset( $this->_wrabbitc_settings['exange_name'] ) ? esc_attr( $this->_wrabbitc_settings['exange_name']) : ''
+		);
+	}
+
+	public function host_callback() {
+		printf(
+			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[host]" id="host" value="%s" placeholder="es myhost.provider.com">',
+			isset( $this->_wrabbitc_settings['host'] ) ? esc_attr( $this->_wrabbitc_settings['host']) : ''
+		);
+	}
+
+	public function vhost_callback() {
+		printf(
+			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[vhost]" id="host" value="%s" placeholder="your vHost">',
+			isset( $this->_wrabbitc_settings['vhost'] ) ? esc_attr( $this->_wrabbitc_settings['vhost']) : ''
+		);
+	}
+
+	public function port_callback() {
+		printf(
+			'<input class="regular-text" type="number" name="wrabbitc_connection_settings[port]" id="port" value="%s" placeholder="es 5672">',
+			isset( $this->_wrabbitc_settings['port'] ) ? esc_attr( $this->_wrabbitc_settings['port']) : ''
+		);
+	}
+
+	public function user_callback() {
+		printf(
+			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[user]" id="user" value="%s" placeholder="your username">',
+			isset( $this->_wrabbitc_settings['user'] ) ? esc_attr( $this->_wrabbitc_settings['user']) : ''
+		);
+	}
+
+	public function password_callback() {
+		printf(
+			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[password]" id="password" value="%s" placeholder="your password">',
+			isset( $this->_wrabbitc_settings['password'] ) ? esc_attr( $this->_wrabbitc_settings['password']) : ''
+		);
+	}
+
+	public function amqp_callback(){
+		printf(
+			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[amqp_uri]" id="amqp_uri" value="%s" placeholder="something like amqp://user:pass@host:10000/vhost">',
+			isset( $this->_wrabbitc_settings['amqp_uri'] ) ? esc_attr( $this->_wrabbitc_settings['amqp_uri']) : ''
+		);
+	}
+
+	/* Onestamente non ho capito a che serve per cui la lascio commentata
+	public function wrabbitc_settings_link( $links ) {
+		$links[] = '<a href="' .
+			admin_url( 'options-general.php?page=wrabbitc-settings' ) .
+			'">' . __('Settings') . '</a>';
+		return $links;
+	}*/
+
+}
+
+?>

@@ -1,0 +1,201 @@
+[
+    {
+        "name": "bunny/bunny",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jakubkulhan/bunny.git",
+            "reference": "05c431a0379ae89278aa23e7c1704ffecb180657"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/jakubkulhan/bunny/zipball/05c431a0379ae89278aa23e7c1704ffecb180657",
+            "reference": "05c431a0379ae89278aa23e7c1704ffecb180657",
+            "shasum": ""
+        },
+        "require": {
+            "php": "~7.0",
+            "psr/log": "~1.0",
+            "react/event-loop": "^1.0 || ^0.5 || ^0.4",
+            "react/promise": "~2.2"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~6.5"
+        },
+        "time": "2018-10-31T14:34:57+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Bunny\\": "src/Bunny/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jakub Kulhan",
+                "email": "jakub.kulhan@gmail.com"
+            }
+        ],
+        "description": "Performant pure-PHP AMQP (RabbitMQ) sync/async (ReactPHP) library",
+        "keywords": [
+            "AMQP",
+            "bunny",
+            "exchange",
+            "message",
+            "messaging",
+            "queue",
+            "queueing",
+            "rabbit",
+            "rabbitmq",
+            "react",
+            "react-php",
+            "reactphp"
+        ]
+    },
+    {
+        "name": "psr/log",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-fig/log.git",
+            "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-fig/log/zipball/6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+            "reference": "6c001f1daafa3a3ac1d8ff69ee4db8e799a654dd",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2018-11-20T15:27:04+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Psr\\Log\\": "Psr/Log/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }
+        ],
+        "description": "Common interface for logging libraries",
+        "homepage": "https://github.com/php-fig/log",
+        "keywords": [
+            "log",
+            "psr",
+            "psr-3"
+        ]
+    },
+    {
+        "name": "react/event-loop",
+        "version": "v1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/reactphp/event-loop.git",
+            "reference": "a0ecac955c67b57c40fe4a1b88a7cca1b58c982d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/reactphp/event-loop/zipball/a0ecac955c67b57c40fe4a1b88a7cca1b58c982d",
+            "reference": "a0ecac955c67b57c40fe4a1b88a7cca1b58c982d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^7.0 || ^6.4 || ^5.7 || ^4.8.35"
+        },
+        "suggest": {
+            "ext-event": "~1.0 for ExtEventLoop",
+            "ext-pcntl": "For signal handling support when using the StreamSelectLoop",
+            "ext-uv": "* for ExtUvLoop"
+        },
+        "time": "2019-02-07T16:19:49+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "React\\EventLoop\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "ReactPHP's core reactor event loop that libraries can use for evented I/O.",
+        "keywords": [
+            "asynchronous",
+            "event-loop"
+        ]
+    },
+    {
+        "name": "react/promise",
+        "version": "v2.7.1",
+        "version_normalized": "2.7.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/reactphp/promise.git",
+            "reference": "31ffa96f8d2ed0341a57848cbb84d88b89dd664d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/reactphp/promise/zipball/31ffa96f8d2ed0341a57848cbb84d88b89dd664d",
+            "reference": "31ffa96f8d2ed0341a57848cbb84d88b89dd664d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.4.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.8"
+        },
+        "time": "2019-01-07T21:25:54+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "React\\Promise\\": "src/"
+            },
+            "files": [
+                "src/functions_include.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jan Sorgalla",
+                "email": "jsorgalla@gmail.com"
+            }
+        ],
+        "description": "A lightweight implementation of CommonJS Promises/A for PHP",
+        "keywords": [
+            "promise",
+            "promises"
+        ]
+    }
+]
