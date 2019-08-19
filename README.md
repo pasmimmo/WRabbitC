@@ -1,40 +1,42 @@
 # WRabbitC
 
-WRabbitC is in wordpress plugin that allows you to send messages to a RabbitMQ broker,
-the development, still in an embryonic state, is used for my internship in order to obtain a degree in computer science from the University of Salerno.
-At present, the plugin only allows you to send messages to CloudAMQP.
+WRabbitC is a WordPress plugin that allows you to connect wordpress with a **RabbitMQ** broker, as you will know the potentialities of the **AMQP** protocol are many, in fact it is possible to send and receive messages through multiple languages ​​(thanks to the countless libraries).
 
-->in version 0.5 we fixed comunication iusses, now throw shortcode [wrabbitc-sc] you can put in all articles or page the form to send data
-->in version 0.6.2 we have added connection page to put your own connection settings
+this plugin aims to integrate the **php-amqplib library** into WordPress with a minimal and immediate interface so as to make the user's work as quick and easy as possible.
+
+`Warning: the work is still in development`
+
+## Version History:
+
+* in version 0.5.0 we have solved the communication problems, now using the shortcode **[wrabbitc-sc]** you can insert in all the articles or pages the form to send the data.
+* in version 0.6.2 we added the plug-in settings page, *Connection Settings* where you can easily configure the properties of your connection.
 
 ## Getting Started
 
-in src folder u can get source
-
 ### Prerequisites
+* min PHP 5.7
+* min wordpress 5.2.2 installed
+* a RabbitMQ Server ( may i suggest CloudAMQP, same as us are using during developing )
 
-min PHP 5.7
-min wordpress 5.2.2
+#### Installing on WordPress
+Simple as usual:
+ * install zip using WordPress dedicated menu, or
+ * just unzip the folder and place in YourSite/wp-content/plugins/
 
-### Installing
+## Notes:
 
-to test this plugin just download wrabbitc.zip and upload it in plugin section in your wordpress installation
-
-## Running the tests
-
-i suggest to use wordpress debug, see wordpress codex for more info
+if you have any iusses or ideas just pull a request
+obviusly any help is wellcome.
 
 ## Authors
 
-* **Domenico Pascucci ** - *Initial work* - [Pasmimmo](https://github.com/Pasmimmo)
+* **Domenico Pascucci** - *Initial work* - [Pasmimmo](https://github.com/Pasmimmo)
 
 based on a work of [Jakubkulhan](https://github.com/jakubkulhan/bunny) - *Performant pure-PHP AMQP (RabbitMQ) sync/async (ReactPHP) library* 
 
-See also the list of [contributors](https://github.com/pasmimmo/WRabbitC/blob/master/Contributors) who participated in this project.
-
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GNU GPL v3 License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Special Thanks to: 
 [Marco Minucci](https://github.com/Kariamos), for the wise guide, and help with the javascript part.
