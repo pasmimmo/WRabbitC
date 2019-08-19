@@ -38,4 +38,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Special Thanks to: 
 [Marco Minucci](https://github.com/Kariamos), for the wise guide, and help with the javascript part.
+
+
 [Simona De Vita], my boss who didn't put me in the usual hurry and anxiety
