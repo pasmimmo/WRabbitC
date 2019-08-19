@@ -37,5 +37,5 @@ See also the list of [contributors](https://github.com/pasmimmo/WRabbitC/blob/ma
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Special Thanks to: 
-[Marco Minucci](https://github.com/Kariamos), for the wise guide, and help with the javascript part
-Simona De Vita, my boss who didn't put me in the usual hurry and anxiety
+[Marco Minucci](https://github.com/Kariamos), for the wise guide, and help with the javascript part.
+[Simona De Vita], my boss who didn't put me in the usual hurry and anxiety
