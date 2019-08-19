@@ -1,6 +1,6 @@
 # WRabbitC
 
-WRabbitC is a WordPress plugin that allows you to connect wordpress with a **RabbitMQ** broker, as you will know the potentialities of the **AMQP** protocol are many, in fact it is possible to send and receive messages through multiple languages ​​(thanks to the countless libraries).
+WRabbitC is a WordPress plugin that allows you to connect wordpress with a **[RabbitMQ](https://www.rabbitmq.com/)** broker, as you will know the potentialities of the **AMQP** protocol are many, in fact it is possible to send and receive messages through multiple languages and plattforms ​​(thanks to the countless libraries).
 
 this plugin aims to integrate the **php-amqplib library** into WordPress with a minimal and immediate interface so as to make the user's work as quick and easy as possible.
 
@@ -23,10 +23,8 @@ Simple as usual:
  * install zip using WordPress dedicated menu, or
  * just unzip the folder and place in YourSite/wp-content/plugins/
 
-## Notes:
-
-if you have any iusses or ideas just pull a request
-obviusly any help is wellcome.
+## A bit of history, 
+wrtabbitc was born as part of my internship for a degree in computer science at the University of Salerno, where I studied, after a few nights between me and the computer I decided to try to turn my php code into a draft of plugin that can be integrated into wordpress.
 
 ## Authors
 
@@ -39,7 +37,10 @@ based on a work of [Jakubkulhan](https://github.com/jakubkulhan/bunny) - *Perfor
 This project is licensed under the GNU GPL v3 License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Special Thanks to: 
-[Marco Minucci](https://github.com/Kariamos), for the wise guide, and help with the javascript part.
+* [Marco Minucci](https://github.com/Kariamos), for the wise guide, and help with the javascript part.
+* [Simona De Vita], my "boss" who didn't put me in the usual hurry and anxiety
 
-
-[Simona De Vita], my boss who didn't put me in the usual hurry and anxiety
+## Last Notes:
+Thanks for visiting my repo,
+if you have any iusses or ideas just pull a request
+obviusly any help is wellcome!
