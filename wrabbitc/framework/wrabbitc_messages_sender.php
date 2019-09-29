@@ -7,6 +7,7 @@ $_wrabbitc_settings = get_option( 'wrabbitc_connection_settings' ); 		// Array o
 //$checkbox = $_wrabbitc_settings['checkbox']; 							// checkbox
 $queue_name = $_wrabbitc_settings['queue_name']; 						// queue_name
 $exange_name = $_wrabbitc_settings['exange_name']; 						// exange_name
+$routing_key = $_wrabbitc_settings['routing_key']; 						// routing_key
 $host = $_wrabbitc_settings['host']; 									// host
 $vhost = $_wrabbitc_settings['vhost']; 									// vhost
 $port = $_wrabbitc_settings['port']; 									// port
@@ -37,13 +38,22 @@ add_action( 'wp_ajax_nopriv_wrabbitc_send_message' , 'wrabbitc_send_message_call
     
 function wrabbitc_send_message_callback() {
     check_ajax_referer( 'my-special-string', 'security' );
-    if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['proteins'])){
+    if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['proteins']) && $_POST['proteins']!=''){
         $name= urldecode($_POST['name']);
-        $mail = urldecode( $_POST['email'] );
-        $proteins = urldecode( $_POST['proteins'] );
-        $message=$name."\n".$mail."\n#".$proteins;
+        $email = urldecode( $_POST['email'] );
+        $pdbs=urldecode($_POST['proteins']);
+        $pdbs_list=str_replace('-','',$pdbs);
+        
+        $pdbs_request -> name =$name;
+        $pdbs_request -> email=$email;
+        $pdbs_request -> pdbs=str_split($pdbs_list,4);
+        $message = json_encode($pdbs_request);
+
         sendMessage($message);
-        $response = "Wellcome ".$name." your requiest(".$proteins.") will be alaborated, you will receive the results at indicated email(".$mail.")";
+        $response='
+        welcome '.$name.', 
+        your request ('.$pdbs.') will be processed as soon as possible. 
+        The result will be sent to the indicated email ('.$email.')';
         echo $response;
     }else{
         echo "Error in submitted data";
@@ -56,12 +66,12 @@ function sendMessage($message)
     $bunny = new Client($GLOBALS['CONNECTION_PARAMETERS']);
     $bunny->connect();
     $channel = $bunny->channel();
-    $channel->queueDeclare($GLOBALS['queue_name'],false, true, false, false); // Queue name
+    #$channel->queueDeclare($GLOBALS['queue_name'],false, true, false, false); // Queue name
     $channel->publish(
         $message,    // The message you're publishing as a string
         [],          // Any headers you want to add to the message
-        '',          // Exchange name
-        $GLOBALS['exange_name'] // Routing key, in this example the queue's name
+        $GLOBALS['exange_name'],// Exchange name
+        $GLOBALS['routing_key'] // Routing key
     );
     $channel->close();
     $bunny->disconnect();

@@ -33,11 +33,11 @@ class ShortCodes{
         <form id="wrabbit_request_form">
             <table>
                 <tr>
-                <td><Label>Name:</Label> <input id="wrabbitc_name" type="text" required></td></tr>
+                <td><Label>Name: </Label> <input id="wrabbitc_name" type="text" size="82" required></td></tr>
                 <tr>
-                <td><Label>E-mail:</label> <input type="email" id="wrabbitc_email" required></tr>
+                <td><Label>e-mail: </label> <input type="email" id="wrabbitc_email" size="82" required></tr>
                 <tr>
-                <td><Label>Elaboration Type: <input type="text" id="wrabbitc_proteins" placeholder="use add button" required></tr>
+                <td><Label>PDBs: <input type="text" id="wrabbitc_proteins" size="82" placeholder="use add PDBS button" disabled required></tr>
             </table>
             <input type="button" id="btn"  onclick="aggiungiCodici();" value="ADD PDBs"/>
             <input type="submit" value="Send" />

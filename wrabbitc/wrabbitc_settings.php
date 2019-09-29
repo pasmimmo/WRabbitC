@@ -5,6 +5,7 @@
  * $checkbox = $_wrabbitc_settings['checkbox']; 							// checkbox
  * $queue_name = $_wrabbitc_settings['queue_name']; 						// queue_name
  * $exange_name = $_wrabbitc_settings['exange_name']; 						// exange_name
+ * $routing_key = $_wrabbitc_settings['routing_key'];						// routing_key
  * $host = $_wrabbitc_settings['host']; 									// host
  * $vhost = $_wrabbitc_settings['vhost']; 									// vhost
  * $port = $_wrabbitc_settings['port']; 									// port
@@ -139,18 +140,26 @@ class WrabbitcSettings {
 			'wrabbitc_connection'	 								// section
 		);
 
-		add_settings_field(
+		/*add_settings_field(
 			'queue_name', 											// id
 			'Queue Name: ', 										// title
 			array( $this, 'queue_name_callback' ), 					// callback
 			'wrabbitc-connection-settings', 						// page
 			'wrabbitc_connection'									// section
-		);
+		);*/
 
 		add_settings_field(
 			'exange_name', 											// id
 			'Exange Name: ', 										// title
 			array( $this, 'exange_name_callback' ), 				// callback
+			'wrabbitc-connection-settings', 						// page
+			'wrabbitc_connection'									// section
+		);
+
+		add_settings_field(
+			'routing_key', 											// id
+			'Routing key: ', 										// title
+			array( $this, 'routing_key_callback' ), 				// callback
 			'wrabbitc-connection-settings', 						// page
 			'wrabbitc_connection'									// section
 		);
@@ -235,6 +244,10 @@ class WrabbitcSettings {
 			$sanitary_values['exange_name'] = sanitize_text_field( $input['exange_name'] );
 		}
 
+		if ( isset( $input['routing_key'] ) ) {
+			$sanitary_values['routing_key'] = sanitize_text_field( $input['routing_key'] );
+		}
+
 		//Manual Section
 		if ( isset( $input['host'] ) ) {
 			$sanitary_values['host'] = sanitize_text_field( $input['host'] );
@@ -286,6 +299,13 @@ class WrabbitcSettings {
 		printf(
 			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[exange_name]" id="exange_name" value="%s" placeholder="usually same as queue name">',
 			isset( $this->_wrabbitc_settings['exange_name'] ) ? esc_attr( $this->_wrabbitc_settings['exange_name']) : ''
+		);
+	}
+
+	public function routing_key_callback() {
+		printf(
+			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[routing_key]" id="routing_key" value="%s" placeholder="leave blank for default">',
+			isset( $this->_wrabbitc_settings['routing_key'] ) ? esc_attr( $this->_wrabbitc_settings['routing_key']) : ''
 		);
 	}
 

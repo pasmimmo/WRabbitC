@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WRabbitC 0.5.2
+ * Plugin Name: WRabbitC 0.7
  * Plugin URI: https://github.com/pasmimmo/WRabbitC
  * Description: Wordpress RabbitMQ Connector
  * Author: Domenico Pascucci
