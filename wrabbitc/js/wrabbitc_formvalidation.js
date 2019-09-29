@@ -2,9 +2,13 @@ console.log("wrabbitc_formvalidation loaded");
 
 function aggiungiCodici() {
     var codice = prompt("Please enter a code:", "");
-    if (inputValidate(codice)) {
-        var stringa = codice.toUpperCase() + "#";
-        document.getElementById("wrabbitc_proteins").value += stringa;
+    if (inputValidate(codice)){
+        if(document.getElementById("wrabbitc_proteins").value.length<50){
+        var stringa = codice.toLowerCase() + "-";
+        document.getElementById("wrabbitc_proteins").value += stringa;}
+        else{
+            alert('too many pdbs')
+        }
     } else {
         alert("pls enter a valid input");
     }
