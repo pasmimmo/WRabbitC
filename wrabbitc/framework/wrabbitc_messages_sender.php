@@ -5,7 +5,7 @@ use Bunny\Client;
 //Retrieve data from DB
 $_wrabbitc_settings = get_option( 'wrabbitc_connection_settings' ); 		// Array of All Options
 //$checkbox = $_wrabbitc_settings['checkbox']; 							// checkbox
-$queue_name = $_wrabbitc_settings['queue_name']; 						// queue_name
+//$queue_name = $_wrabbitc_settings['queue_name']; 						// queue_name
 $exange_name = $_wrabbitc_settings['exange_name']; 						// exange_name
 $routing_key = $_wrabbitc_settings['routing_key']; 						// routing_key
 $host = $_wrabbitc_settings['host']; 									// host
