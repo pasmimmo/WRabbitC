@@ -48,23 +48,46 @@ class WrabbitcSettings {
 			'wrabbitc-connection-settings', 									//this menu-slug
 			array($this, 'connection_page')										//funcrion optional
 		);
-		add_submenu_page( 'wrabbitc-settings', 'WRabbitC Sender', 'Messages Sender', 
-		'manage_options', 'wrabbitc-producer', array($this, 'sender_page'));
+		/*add_submenu_page( 'wrabbitc-settings', 'WRabbitC Sender', 'Messages Sender', 
+		'manage_options', 'wrabbitc-producer', array($this, 'sender_page'));*/
 	}
 
 	public function main_page()
 	{
+		$plugin_info =get_plugin_data(plugin_dir_path( __FILE__ ).'wrabbitc.php');
+
 		echo '
-		<div class="wp-caption">
-			<h3>Welcome to WordPress RabbitMQ Connector,</h3>
-			<br>
-			<p> WRabbitC for friends, this plugin is still in development (current version 0.6.0), 
-			at the moment it is possible to configure the connection parameters ( we use CloudAMQP in developing) in the appropriate menu, 
-			and use a shortcode to send data to your broker.
-			In our wish list is to fully implement sending and receiving mode, then stay connected.
-			Thank you for installing WrabbitC you can contact us at our GitHub, the WRabbitC team gives you a warm greeting
-			<img src="'.plugins_url('wrabbitc/img/',__DIR__).'butterfly.gif" width="300" height="300" align="center">
-			';
+		<div class="wp-caption aligncenter">
+			<h3 class"align-center">Welcome to '.$plugin_info['Name'].',</h3>
+			<div>
+				<img src="'.plugins_url('wrabbitc/img/',__DIR__).'rabbit_chair.gif" width="200" height="200" align="left">
+				<img src="'.plugins_url('wrabbitc/img/',__DIR__).'butterfly.gif" width="150" align="right">
+				<p>this plugin, allows sending data to a RabbitMQ broker. <br>
+				At the moment data sending is supported through a pre-set form that can be obtained 
+				by adding the shortcode [wrabbitc-sc] in any page or article.
+				</p><hr>
+				<h3>some info on the project:</h3>
+				WordPress RabbitMQ Connector is a plugin developed during my degree thesis in Computer Science, 
+				as part of a larger project called "Project Alice" whose goal is to automate the work of the "boys" 
+				of the BioInformatics laboratory of Salerno.<br>
+				At present ( v '.$plugin_info['Version'].' ) , due to time constraints, the plugin only supports the sending of data and not the reception, 
+				which in any case I intend to implement in the future. <br>
+				It should be noted that as a projective choice in order to create the lowest possible code coupling, 
+				<b>the producer sends the data to an Exange</b> 
+				(in the code there is a commented section that also allows the direct sending on a queue, 
+				left to help those wishing to extend my work) through a static form created following for the laboratory request, 
+				in the design phase I followed the idea of ​​being able to extend this form in the future and 
+				make it customizable by the web master who will install my plugin. Among my future goals is 
+				the complete drafting of the code which will lead to a total two-way communication with RabbitMQ, 
+				preserving the asynchronous nature of the amqp protocol and still releasing the source code under the GNU GPL v3 license.
+				Anyone wishing to help or contact me, can do it at the project\'s <a href="https://github.com/pasmimmo/WRabbitC">Github repo</a>.<hr>
+				I conclude this lengthy introduction by thanking the whole team of the BioInformatics Laboratory, 
+				whose precious collaboration has made me grow so much from a professional point of view, 
+				the people who have reported me bugs helping me to make my code less disgusting, 
+				and the friends of all time who supported me during this time.
+				Thanks from <b>Pasmimmo</b>.</p>
+			</div>
+		<div>';
 	}
 
 	public function connection_page() {
@@ -131,16 +154,16 @@ class WrabbitcSettings {
 			array( $this, 'connection_section_general' ), 			// callback
 			'wrabbitc-connection-settings' 							// page
 		);
-
+		/*
 		add_settings_field(
 			'checkbox', 											// id
-			'use AMQP URI', 										// title
+			'use Exange instead of queue', 							// title
 			array( $this, 'checkbox_callback' ), 					// callback
 			'wrabbitc-connection-settings', 						// page
 			'wrabbitc_connection'	 								// section
 		);
 
-		/*add_settings_field(
+		add_settings_field(
 			'queue_name', 											// id
 			'Queue Name: ', 										// title
 			array( $this, 'queue_name_callback' ), 					// callback
@@ -212,7 +235,7 @@ class WrabbitcSettings {
 			'wrabbitc_manual_url_settings' 							// section
 		);
 		//AMQP URI Section
-		add_settings_section(
+		/*add_settings_section(
 			'wrabbitc_amqp_uri_settings', 							// id
 			'AMQP URI Settings', 									// title
 			array( $this, 'connection_section_amqp_uri' ), 			// callback
@@ -225,20 +248,20 @@ class WrabbitcSettings {
 			array( $this, 'amqp_callback' ), 						// callback
 			'wrabbitc-amqp-connection-settings', 					// page
 			'wrabbitc_amqp_uri_settings' 							// section
-		);
+		);*/
 
 	}
 
 	public function wrabbitc_settings_sanitize($input) {
 		$sanitary_values = array();
-		//General Section
+		/*General Section
 		if ( isset( $input['checkbox'] ) ) {
 			$sanitary_values['checkbox'] = $input['checkbox'];
 		}
 
 		if ( isset( $input['queue_name'] ) ) {
 			$sanitary_values['queue_name'] = sanitize_text_field( $input['queue_name'] );
-		}
+		}*/
 
 		if ( isset( $input['exange_name'] ) ) {
 			$sanitary_values['exange_name'] = sanitize_text_field( $input['exange_name'] );
@@ -269,15 +292,15 @@ class WrabbitcSettings {
 			$sanitary_values['password'] = sanitize_text_field( $input['password'] );
 		}
 
-		//AMQP URI Section
+		/*AMQP URI Section
 		if ( isset( $input['amqp_uri'] ) ) {
 			$sanitary_values['amqp_uri'] = esc_url_raw( $input['amqp_uri'] );
-		}
+		}*/
 
 		return $sanitary_values;
 	}
 	//Forms Callback
-
+/*
 	public function checkbox_callback() {
 		printf(
 			'<label class="switch">
@@ -293,7 +316,7 @@ class WrabbitcSettings {
 			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[queue_name]" id="queue_name" value="%s" placeholder="es myQueue">',
 			isset( $this->_wrabbitc_settings['queue_name'] ) ? esc_attr( $this->_wrabbitc_settings['queue_name']) : ''
 		);
-	}
+	}*/
 
 	public function exange_name_callback() {
 		printf(
@@ -343,7 +366,7 @@ class WrabbitcSettings {
 			isset( $this->_wrabbitc_settings['password'] ) ? esc_attr( $this->_wrabbitc_settings['password']) : ''
 		);
 	}
-
+/*
 	public function amqp_callback(){
 		printf(
 			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[amqp_uri]" id="amqp_uri" value="%s" placeholder="something like amqp://user:pass@host:10000/vhost">',
@@ -351,7 +374,7 @@ class WrabbitcSettings {
 		);
 	}
 
-	/* Onestamente non ho capito a che serve per cui la lascio commentata
+	Onestamente non ho capito a che serve per cui la lascio commentata
 	public function wrabbitc_settings_link( $links ) {
 		$links[] = '<a href="' .
 			admin_url( 'options-general.php?page=wrabbitc-settings' ) .
