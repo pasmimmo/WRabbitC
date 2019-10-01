@@ -372,15 +372,15 @@ class WrabbitcSettings {
 			'<input class="regular-text" type="text" name="wrabbitc_connection_settings[amqp_uri]" id="amqp_uri" value="%s" placeholder="something like amqp://user:pass@host:10000/vhost">',
 			isset( $this->_wrabbitc_settings['amqp_uri'] ) ? esc_attr( $this->_wrabbitc_settings['amqp_uri']) : ''
 		);
-	}
+	}*/
 
-	Onestamente non ho capito a che serve per cui la lascio commentata
+	//Link al disinstaller/deattivatore dalla pagina plugin
 	public function wrabbitc_settings_link( $links ) {
 		$links[] = '<a href="' .
-			admin_url( 'options-general.php?page=wrabbitc-settings' ) .
+			admin_url( 'admin.php?page=wrabbitc-connection-settings' ) .
 			'">' . __('Settings') . '</a>';
 		return $links;
-	}*/
+	}
 
 }
 
