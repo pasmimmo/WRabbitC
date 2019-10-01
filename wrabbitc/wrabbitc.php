@@ -5,7 +5,7 @@
  * Description: Wordpress RabbitMQ Connector
  * Author: Domenico Pascucci
  * Author URI: https://github.com/pasmimmo
- * Version: 0.7.2
+ * Version: 0.8.0
  * Text Domain: alpha version of RabbitMQ Connector for WP
  *
  * Copyright: (c) 2018-2020 Domenico Pascucci (pasmimmo@gmail.com)
